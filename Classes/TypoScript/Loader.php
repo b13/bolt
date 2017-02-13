@@ -65,7 +65,6 @@ class Loader
 
                 // pre-process the lines of the constants and setup and check for "@" syntax
                 // @import
-                // @title
                 // @sitetitle
                 // @clear
                 // are the currently allowed syntax (must be on the head of each line)
@@ -74,10 +73,12 @@ class Loader
                     'config' => $setup,
                     'constants' => $constants,
                     'nextLevel' => 0,
+                    'static_file_mode' => 1,
                     'tstamp' => filemtime($setupFile),
-                    'uid' => 'bolt_' . $package->getPackageKey(),
+                    'uid' => 'sys_bolt_' . $package->getPackageKey(),
+                    'title' => $package->getPackageKey()
                 ];
-                $templateService->processTemplate($fakeRow, 'bolt_' . $package->getPackageKey(), $pageRecord['uid'], 'bolt_' . $package->getPackageKey());
+                $templateService->processTemplate($fakeRow, 'sys_bolt_' . $package->getPackageKey(), $pageRecord['uid'], 'sys_bolt_' . $package->getPackageKey());
                 if (!$templateService->rootId) {
                     $templateService->rootId = $pageRecord['uid'];
                 }
