@@ -39,48 +39,50 @@ class Loader
     public function addSiteConfiguration(&$hookParameters, $templateService)
     {
         $packageHelper = GeneralUtility::makeInstance(PackageHelper::class);
-        foreach ($hookParameters['rootLine'] as $level => $pageRecord) {
-            $package = $packageHelper->getPackageFromPageRecord($pageRecord);
-            if ($package) {
+        if (is_array($hookParameters['rootLine'])) {
+            foreach ($hookParameters['rootLine'] as $level => $pageRecord) {
+                $package = $packageHelper->getPackageFromPageRecord($pageRecord);
+                if ($package) {
 
-                $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.typoscript';
-                $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.typoscript';
-                if (!file_exists($constantsFile)) {
-                    $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.txt';
-                }
-                if (!file_exists($setupFile)) {
-                    $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.txt';
-                }
+                    $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.typoscript';
+                    $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.typoscript';
+                    if (!file_exists($constantsFile)) {
+                        $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.txt';
+                    }
+                    if (!file_exists($setupFile)) {
+                        $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.txt';
+                    }
 
-                if (file_exists($constantsFile)) {
-                    $constants = (string)@file_get_contents($constantsFile);
-                } else {
-                    $constants = '';
-                }
-                if (file_exists($setupFile)) {
-                    $setup = (string)@file_get_contents($setupFile);
-                } else {
-                    $setup = '';
-                }
+                    if (file_exists($constantsFile)) {
+                        $constants = (string)@file_get_contents($constantsFile);
+                    } else {
+                        $constants = '';
+                    }
+                    if (file_exists($setupFile)) {
+                        $setup = (string)@file_get_contents($setupFile);
+                    } else {
+                        $setup = '';
+                    }
 
-                // pre-process the lines of the constants and setup and check for "@" syntax
-                // @import
-                // @sitetitle
-                // @clear
-                // are the currently allowed syntax (must be on the head of each line)
+                    // pre-process the lines of the constants and setup and check for "@" syntax
+                    // @import
+                    // @sitetitle
+                    // @clear
+                    // are the currently allowed syntax (must be on the head of each line)
 
-                $fakeRow = [
-                    'config' => $setup,
-                    'constants' => $constants,
-                    'nextLevel' => 0,
-                    'static_file_mode' => 1,
-                    'tstamp' => filemtime($setupFile),
-                    'uid' => 'sys_bolt_' . $package->getPackageKey(),
-                    'title' => $package->getPackageKey()
-                ];
-                $templateService->processTemplate($fakeRow, 'sys_bolt_' . $package->getPackageKey(), $pageRecord['uid'], 'sys_bolt_' . $package->getPackageKey());
-                if (!$templateService->rootId) {
-                    $templateService->rootId = $pageRecord['uid'];
+                    $fakeRow = [
+                        'config' => $setup,
+                        'constants' => $constants,
+                        'nextLevel' => 0,
+                        'static_file_mode' => 1,
+                        'tstamp' => filemtime($setupFile),
+                        'uid' => 'sys_bolt_' . $package->getPackageKey(),
+                        'title' => $package->getPackageKey()
+                    ];
+                    $templateService->processTemplate($fakeRow, 'sys_bolt_' . $package->getPackageKey(), $pageRecord['uid'], 'sys_bolt_' . $package->getPackageKey());
+                    if (!$templateService->rootId) {
+                        $templateService->rootId = $pageRecord['uid'];
+                    }
                 }
             }
         }
