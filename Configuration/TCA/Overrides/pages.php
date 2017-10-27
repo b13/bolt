@@ -14,4 +14,10 @@ defined('TYPO3_MODE') or die();
     ]
 ]);
 
+# Ensure that site is not visible for page translations
+if (version_compare(TYPO3_version, '9.0', '>=')) {
+    $GLOBALS['TCA']['pages']['columns']['site']['l10n_mode'] = 'exclude';
+}
+
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages', 'site', '', 'after:title');
