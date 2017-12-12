@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array (
   'title' => 'Bolt - An easy TYPO3 integration basis',
   'description' => 'This package ships best defaults for integrators',
   'category' => 'fe',
-  'version' => '1.0.1',
+  'version' => '1.0.2',
   'state' => 'stable',
   'uploadfolder' => false,
   'createDirs' => '',
@@ -26,7 +26,7 @@ $EM_CONF[$_EXTKEY] = array (
   array (
     'depends' => 
     array (
-      'typo3' => '7.6.0-8.9.99',
+      'typo3' => '7.6.0-9.9.99',
     ),
     'conflicts' => 
     array (
