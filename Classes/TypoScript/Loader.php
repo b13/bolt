@@ -91,7 +91,7 @@ class Loader
                     // $templateService->processTemplate() adds the constants and setup info
                     // to the very end however, we like to add ours add root template
                     array_pop($templateService->constants);
-                    array_unshift($templateService->config, $constants);
+                    array_unshift($templateService->constants, $constants);
                     array_pop($templateService->config);
                     array_unshift($templateService->config, $setup);
                     // when having the 'root' flag, set $processTemplate resets the rootline -> we don't want that.
