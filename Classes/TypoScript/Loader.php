@@ -38,53 +38,80 @@ class Loader
      */
     public function addSiteConfiguration(&$hookParameters, $templateService)
     {
+        // let's copy the rootline value, as $templateService->processTemplate() might reset it
+        $rootLine = $hookParameters['rootLine'];
+        if (!is_array($rootLine) || empty($rootLine)) {
+            return;
+        }
         $packageHelper = GeneralUtility::makeInstance(PackageHelper::class);
-        if (is_array($hookParameters['rootLine'])) {
-            foreach ($hookParameters['rootLine'] as $level => $pageRecord) {
-                $package = $packageHelper->getPackageFromPageRecord($pageRecord);
-                if ($package) {
+        foreach ($rootLine as $level => $pageRecord) {
+            $package = $packageHelper->getPackageFromPageRecord($pageRecord);
+            if ($package) {
 
-                    $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.typoscript';
-                    $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.typoscript';
-                    if (!file_exists($constantsFile)) {
-                        $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.txt';
-                    }
-                    if (!file_exists($setupFile)) {
-                        $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.txt';
-                    }
+                $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.typoscript';
+                $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.typoscript';
+                if (!file_exists($constantsFile)) {
+                    $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.txt';
+                }
+                if (!file_exists($setupFile)) {
+                    $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.txt';
+                }
 
-                    if (file_exists($constantsFile)) {
-                        $constants = (string)@file_get_contents($constantsFile);
-                    } else {
-                        $constants = '';
-                    }
-                    if (file_exists($setupFile)) {
-                        $setup = (string)@file_get_contents($setupFile);
-                    } else {
-                        $setup = '';
-                    }
+                if (file_exists($constantsFile)) {
+                    $constants = (string)@file_get_contents($constantsFile);
+                } else {
+                    $constants = '';
+                }
+                if (file_exists($setupFile)) {
+                    $setup = (string)@file_get_contents($setupFile);
+                } else {
+                    $setup = '';
+                }
 
-                    // pre-process the lines of the constants and setup and check for "@" syntax
-                    // @import
-                    // @sitetitle
-                    // @clear
-                    // are the currently allowed syntax (must be on the head of each line)
+                // pre-process the lines of the constants and setup and check for "@" syntax
+                // @import
+                // @sitetitle
+                // @clear
+                // are the currently allowed syntax (must be on the head of each line)
+                $hasRootTemplate = (bool)$this->getRootId($templateService);
+                $fakeRow = [
+                    'config' => $setup,
+                    'constants' => $constants,
+                    'nextLevel' => 0,
+                    'static_file_mode' => 1,
+                    'tstamp' => filemtime($setupFile),
+                    'uid' => 'sys_bolt_' . $package->getPackageKey(),
+                    'title' => $package->getPackageKey(),
+                    // make this the root template
+                    'root' => !$hasRootTemplate
+                ];
+                $templateService->processTemplate($fakeRow, 'sys_bolt_' . $package->getPackageKey(), (int)$pageRecord['uid'], 'sys_bolt_' . $package->getPackageKey());
 
-                    $fakeRow = [
-                        'config' => $setup,
-                        'constants' => $constants,
-                        'nextLevel' => 0,
-                        'static_file_mode' => 1,
-                        'tstamp' => filemtime($setupFile),
-                        'uid' => 'sys_bolt_' . $package->getPackageKey(),
-                        'title' => $package->getPackageKey()
-                    ];
-                    $templateService->processTemplate($fakeRow, 'sys_bolt_' . $package->getPackageKey(), $pageRecord['uid'], 'sys_bolt_' . $package->getPackageKey());
-                    if (!$templateService->rootId) {
-                        $templateService->rootId = $pageRecord['uid'];
-                    }
+                if (!$hasRootTemplate) {
+                    // $templateService->processTemplate() adds the constants and setup info
+                    // to the very end however, we like to add ours add root template
+                    array_pop($templateService->constants);
+                    array_unshift($templateService->config, $constants);
+                    array_pop($templateService->config);
+                    array_unshift($templateService->config, $setup);
+                    // when having the 'root' flag, set $processTemplate resets the rootline -> we don't want that.
+                    $hookParameters['rootLine'] = $rootLine;
                 }
             }
         }
+    }
+
+    /**
+     * $templateService->rootId is protected in TYPO3 v9, so it has to be evaluated differently.
+     *
+     * @param TemplateService $templateService
+     * @return int
+     */
+    protected function getRootId(TemplateService $templateService)
+    {
+        if (method_exists($templateService, 'getRootId')) {
+            return $templateService->getRootId();
+        }
+        return $templateService->rootId;
     }
 }
