@@ -36,7 +36,7 @@ If you want to do one step less when developing a TYPO3 website :)
 ## How to install this extension?
 
 You can set this up via composer (composer require cmsexperts/bolt) or via
-TER (extension name "bolt"), it runs best with TYPO3 v8.
+TER (extension name "bolt"), it runs best with TYPO3 v8 or later.
 
 ## License
 
