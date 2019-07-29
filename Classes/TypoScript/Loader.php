@@ -79,7 +79,7 @@ class Loader
                     'constants' => $constants,
                     'nextLevel' => 0,
                     'static_file_mode' => 1,
-                    'tstamp' => filemtime($setupFile),
+                    'tstamp' => $setup ? filemtime($setupFile) : time(),
                     'uid' => 'sys_bolt_' . $package->getPackageKey(),
                     'title' => $package->getPackageKey(),
                     // make this the root template
