@@ -22,16 +22,16 @@ $EM_CONF[$_EXTKEY] = array (
   'author' => 'Benni Mack',
   'author_email' => '',
   'author_company' => '',
-  'constraints' => 
+  'constraints' =>
   array (
-    'depends' => 
+    'depends' =>
     array (
       'typo3' => '7.6.0-10.9.99',
     ),
-    'conflicts' => 
+    'conflicts' =>
     array (
     ),
-    'suggests' => 
+    'suggests' =>
     array (
     ),
   ),

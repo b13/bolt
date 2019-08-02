@@ -1,5 +1,5 @@
 <?php
-namespace CMSExperts\Bolt\TypoScript;
+namespace B13\Bolt\TypoScript;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,7 +14,7 @@ namespace CMSExperts\Bolt\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
-use CMSExperts\Bolt\Configuration\PackageHelper;
+use B13\Bolt\Configuration\PackageHelper;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

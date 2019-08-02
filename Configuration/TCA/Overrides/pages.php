@@ -9,7 +9,7 @@ defined('TYPO3_MODE') or die();
             'type' => 'select',
             'renderType' => 'selectSingle',
             'size' => 1,
-            'itemsProcFunc' => \CMSExperts\Bolt\Configuration\PackageHelper::class . '->findAllSitePackages'
+            'itemsProcFunc' => \B13\Bolt\Configuration\PackageHelper::class . '->findAllSitePackages'
         ]
     ]
 ]);

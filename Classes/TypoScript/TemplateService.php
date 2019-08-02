@@ -1,5 +1,5 @@
 <?php
-namespace CMSExperts\Bolt\TypoScript;
+namespace B13\Bolt\TypoScript;
 
 /*
  * This file is part of the TYPO3 CMS project.

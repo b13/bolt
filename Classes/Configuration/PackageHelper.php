@@ -1,5 +1,5 @@
 <?php
-namespace CMSExperts\Bolt\Configuration;
+namespace B13\Bolt\Configuration;
 
 /*
  * This file is part of the TYPO3 CMS project.

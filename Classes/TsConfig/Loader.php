@@ -1,5 +1,5 @@
 <?php
-namespace CMSExperts\Bolt\TsConfig;
+namespace B13\Bolt\TsConfig;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,7 +13,7 @@ namespace CMSExperts\Bolt\TsConfig;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use CMSExperts\Bolt\Configuration\PackageHelper;
+use B13\Bolt\Configuration\PackageHelper;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

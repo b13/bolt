@@ -1,19 +1,20 @@
 {
-	"name": "cmsexperts/bolt",
+	"name": "b13/bolt",
 	"type": "typo3-cms-extension",
 	"description": "Bolt - An easy TYPO3 integration basis",
-	"homepage": "https://github.com/CMSExperts/bolt",
+	"homepage": "https://github.com/b13/bolt",
 	"license": "GPL-2.0+",
 	"keywords": ["TYPO3 CMS", "Integrators", "Site Extension", "Site Package", "TypoScript"],
 	"require": {
 		"typo3/cms-core": "^7.6 || ^8.0 || ^9.0 || ^10.0"
 	},
 	"replace": {
-		"bolt": "self.version"
+		"bolt": "self.version",
+		"cmsexperts/bolt": "self.version"
 	},
 	"autoload": {
 		"psr-4": {
-			"CMSExperts\\Bolt\\": "Classes"
+			"B13\\Bolt\\": "Classes"
 		}
 	}
 }
