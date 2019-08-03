@@ -6,7 +6,7 @@
 	"license": "GPL-2.0+",
 	"keywords": ["TYPO3 CMS", "Integrators", "Site Extension", "Site Package", "TypoScript"],
 	"require": {
-		"typo3/cms-core": "^7.6 || ^8.0 || ^9.0 || ^10.0"
+		"typo3/cms-core": "^8.0 || ^9.0 || ^10.0"
 	},
 	"replace": {
 		"bolt": "self.version",

@@ -112,6 +112,8 @@ class Loader
         if (method_exists($templateService, 'getRootId')) {
             return $templateService->getRootId();
         }
+        // v8
+        // @extensionScannerIgnoreLine
         return $templateService->rootId;
     }
 }
