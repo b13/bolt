@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  B13\Bolt\:
+    resource: '../Classes/*'
+
+  B13\Bolt\TsConfig\Loader:
+    public: true
+
+  B13\Bolt\TypoScript\Loader:
+    public: true
