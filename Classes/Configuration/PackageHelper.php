@@ -14,9 +14,13 @@ namespace B13\Bolt\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
+use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 
 /**
  * Helper to render a dynamic selection of available site extensions
@@ -26,47 +30,42 @@ class PackageHelper
 {
 
     /**
-     * Fetches a package object from a pages.site variable, if given and installed
-     *
-     * @param $pageRecord
-     * @return PackageInterface
+     * @var PackageManager
      */
-    public function getPackageFromPageRecord($pageRecord)
-    {
-        $package = null;
-        if ($pageRecord['site']) {
-            $packageName = $pageRecord['site'];
-
-            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-            $activePackages = $packageManager->getActivePackages();
-            foreach ($activePackages as $activePackage) {
-                if ($activePackage->getPackageKey() === $packageName ||
-                    $activePackage->getValueFromComposerManifest('name') === $packageName) {
-                    $package = $activePackage;
-                    break;
-                }
-            }
-        }
-        return $package;
-    }
+    protected $packageManager = null;
 
     /**
-     * Items proc func for selecting a record
-     *
-     * @param $configuration
+     * @var SiteFinder
      */
-    public function findAllSitePackages(&$configuration)
+    protected $siteFinder = null;
+
+    /**
+     * PackageHelper constructor.
+     * @param null|PackageManager $packageManager
+     * @param null|SiteFinder $siteFinder
+     */
+    public function __construct(PackageManager $packageManager = null, SiteFinder $siteFinder = null)
     {
-        $configuration['items'][] = [' -- none --', '0'];
-        /** @var PackageManager $packageManager */
-        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-        foreach ($packageManager->getActivePackages() as $package) {
-            if ($package->getValueFromComposerManifest('type') === 'typo3-cms-site'
-                || (strpos($package->getPackageKey(), 'site_') === 0)
-                || strpos($package->getPackageKey(), 'theme_') === 0
-                ) {
-                $configuration['items'][] = [$package->getPackageMetaData()->getDescription() . ' (' . $package->getValueFromComposerManifest('name') . ')', $package->getValueFromComposerManifest('name')];
-            }
+        $this->packageManager = $packageManager ?? GeneralUtility::makeInstance(PackageManager::class);
+        $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
+    }
+
+
+    /**
+     * @param int $pageId
+     * @return null|Package
+     */
+    public function getSitePackage(int $pageId): ?Package
+    {
+        try {
+            $site = $this->siteFinder->getSiteByRootPageId($pageId);
+            $configuration = $site->getConfiguration();
+            $packageKey = (string)$configuration['sitePackage'];
+            return $this->packageManager->getPackage($packageKey);
+        } catch (SiteNotFoundException $e) {
+            return null;
+        } catch (UnknownPackageException $e) {
+            return null;
         }
     }
 }

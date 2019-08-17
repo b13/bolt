@@ -14,7 +14,6 @@ namespace B13\Bolt\TsConfig;
  * The TYPO3 project - inspiring people to share!
  */
 use B13\Bolt\Configuration\PackageHelper;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -24,6 +23,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Loader
 {
+
+    /**
+     * @var PackageHelper
+     */
+    protected $packageHelper = null;
+
+    /**
+     * @param PackageHelper|null $packageHelper
+     */
+    public function __construct(PackageHelper $packageHelper = null)
+    {
+        $this->packageHelper = $packageHelper ?? GeneralUtility::makeInstance(PackageHelper::class);
+    }
+
     /**
      * Adds TSconfig
      *
@@ -33,13 +46,11 @@ class Loader
      * @param array $returnPartArray
      * @return array
      */
-    public function addSiteConfiguration($TSdataArray, $id, $rootLine, $returnPartArray)
+    public function addSiteConfiguration($TSdataArray, $id, $rootLine, $returnPartArray): array
     {
-        $packageHelper = GeneralUtility::makeInstance(PackageHelper::class);
         foreach ($rootLine as $level => $pageRecord) {
-            $pageSiteRecord = BackendUtility::getRecord('pages', $pageRecord['uid'], 'site');
-            $package = $packageHelper->getPackageFromPageRecord($pageSiteRecord);
-            if ($package) {
+            $package = $this->packageHelper->getSitePackage($pageRecord['uid']);
+            if ($package !== null) {
                 $tsConfigFile = $package->getPackagePath() . 'Configuration/PageTs/main.tsconfig';
                 if (!file_exists($tsConfigFile)) {
                     $tsConfigFile = $package->getPackagePath() . 'Configuration/PageTsConfig/main.tsconfig';

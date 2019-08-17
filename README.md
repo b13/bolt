@@ -15,15 +15,16 @@ Then, the tricky part starts:
 We want to avoid that for our sites, making life easier for integrators and get the website
 up and running faster.
 
-Because of this, this extension adds a field to the pages table (only for the records
-marked as site root), where the integrator only selects his/her site package
-and everything else is taken care of.
+Because of this, this extension adds a field to the Site Configuration,
+where you can define your site extension:
+
+    sitePackage: '<my_extension_key>'
 
 It's doing the same as you'd need to do manually all the time.
 
 What you do:
 * Create your site extension
-* Install bolt, and choose your site extension on your root page
+* Install bolt, and choose your site extension on your Site Configuration
 * Ensure your site extension contains one of the following files
     - Configuration/TypoScript/constants.txt or constants.typoscript
     - Configuration/TypoScript/setup.txt or setup.typoscript
@@ -36,7 +37,11 @@ If you want to do one step less when developing a TYPO3 website :)
 ## How to install this extension?
 
 You can set this up via composer (composer require b13/bolt) or via
-TER (extension name "bolt"), it runs best with TYPO3 v8 or later.
+TER (extension name "bolt"), it runs best with TYPO3 v9 or later.
+
+## Requirements
+
+Site Configation is required.
 
 ## License
 
@@ -49,8 +54,7 @@ For details see the LICENSE file in this repository.
 - Kick start a site extension
 - Deal with domains
 - Add a integrator backend module to show the current setup
-- Integrate Fluid templates, Content types, domain records, URL + language configuration
-all in one place.
+- Integrate Fluid templates, Content types, etc.
 - Change the extension icon
 - Make "disabling sys_template" optional
 - Run all cases with extension templates / static inclusions work

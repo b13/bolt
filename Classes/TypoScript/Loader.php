@@ -24,6 +24,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Loader
 {
+
+    /**
+     * @var PackageHelper
+     */
+    protected $packageHelper = null;
+
+    /**
+     * @param PackageHelper|null $packageHelper
+     */
+    public function __construct(PackageHelper $packageHelper = null)
+    {
+        $this->packageHelper = $packageHelper ?? GeneralUtility::makeInstance(PackageHelper::class);
+    }
+
     /**
      *  $hookParameters = [
      *      'extensionStaticsProcessed' => &$this->extensionStaticsProcessed,
@@ -43,10 +57,9 @@ class Loader
         if (!is_array($rootLine) || empty($rootLine)) {
             return;
         }
-        $packageHelper = GeneralUtility::makeInstance(PackageHelper::class);
         foreach ($rootLine as $level => $pageRecord) {
-            $package = $packageHelper->getPackageFromPageRecord($pageRecord);
-            if ($package) {
+            $package = $this->packageHelper->getSitePackage((int)$pageRecord['uid']);
+            if ($package !== null) {
 
                 $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.typoscript';
                 $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.typoscript';
@@ -73,7 +86,7 @@ class Loader
                 // @sitetitle
                 // @clear
                 // are the currently allowed syntax (must be on the head of each line)
-                $hasRootTemplate = (bool)$this->getRootId($templateService);
+                $hasRootTemplate = (bool)$templateService->getRootId();
                 $fakeRow = [
                     'config' => $setup,
                     'constants' => $constants,
@@ -99,21 +112,5 @@ class Loader
                 }
             }
         }
-    }
-
-    /**
-     * $templateService->rootId is protected in TYPO3 v9, so it has to be evaluated differently.
-     *
-     * @param TemplateService $templateService
-     * @return int
-     */
-    protected function getRootId(TemplateService $templateService)
-    {
-        if (method_exists($templateService, 'getRootId')) {
-            return $templateService->getRootId();
-        }
-        // v8
-        // @extensionScannerIgnoreLine
-        return $templateService->rootId;
     }
 }
