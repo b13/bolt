@@ -50,7 +50,7 @@ class Loader
      * @param TemplateService $templateService
      * @return void
      */
-    public function addSiteConfiguration(&$hookParameters, $templateService)
+    public function addSiteConfiguration(&$hookParameters, TemplateService $templateService)
     {
         // let's copy the rootline value, as $templateService->processTemplate() might reset it
         $rootLine = $hookParameters['rootLine'];
