@@ -10,7 +10,7 @@
 	},
 	"replace": {
 		"bolt": "self.version",
-		"cmsexperts/bolt": "self.version"
+		"cmsexperts/bolt": "*"
 	},
 	"autoload": {
 		"psr-4": {
