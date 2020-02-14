@@ -1,4 +1,4 @@
-# Easier integrations for TYPO3 sites
+# Easier Integrations for TYPO3 sites
 
 This package is a TYPO3 extension that makes integration work easier.
 
@@ -58,3 +58,7 @@ For details see the LICENSE file in this repository.
 - Change the extension icon
 - Make "disabling sys_template" optional
 - Run all cases with extension templates / static inclusions work
+
+## Sharing our expertise
+
+[Find more TYPO3 extensions we have developed](https://b13.com/useful-typo3-extensions-from-b13-to-you) that help us deliver value in client projects. As part of the way we work, we focus on testing and best practices to ensure long-term performance, reliability, and results in all our code.
