@@ -55,6 +55,5 @@ For details see the LICENSE file in this repository.
 - Deal with domains
 - Add a integrator backend module to show the current setup
 - Integrate Fluid templates, Content types, etc.
-- Change the extension icon
 - Make "disabling sys_template" optional
 - Run all cases with extension templates / static inclusions work
