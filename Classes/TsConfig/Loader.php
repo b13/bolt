@@ -14,7 +14,7 @@ namespace B13\Bolt\TsConfig;
  * The TYPO3 project - inspiring people to share!
  */
 use B13\Bolt\Configuration\PackageHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 
 /**
  * Dynamically loads PageTSconfig from an extension. Is added AFTER a site's
@@ -23,31 +23,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Loader
 {
-
     /**
      * @var PackageHelper
      */
     protected $packageHelper = null;
 
     /**
-     * @param PackageHelper|null $packageHelper
+     * @param PackageHelper $packageHelper
      */
-    public function __construct(PackageHelper $packageHelper = null)
+    public function __construct(PackageHelper $packageHelper)
     {
-        $this->packageHelper = $packageHelper ?? GeneralUtility::makeInstance(PackageHelper::class);
+        $this->packageHelper = $packageHelper;
     }
 
     /**
-     * Adds TSconfig
-     *
-     * @param array $TSdataArray
-     * @param int $id
-     * @param array $rootLine
-     * @param array $returnPartArray
-     * @return array
+     * @param ModifyLoadedPageTsConfigEvent $event
      */
-    public function addSiteConfiguration($TSdataArray, $id, $rootLine, $returnPartArray): array
+    public function __invoke(ModifyLoadedPageTsConfigEvent $event): void
     {
+        $rootLine = $event->getRootLine();
+        $tsConfig = $event->getTsConfig();
         foreach ($rootLine as $level => $pageRecord) {
             $package = $this->packageHelper->getSitePackage($pageRecord['uid']);
             if ($package !== null) {
@@ -57,10 +52,10 @@ class Loader
                 }
                 if (file_exists($tsConfigFile)) {
                     $fileContents = @file_get_contents($tsConfigFile);
-                    $TSdataArray['uid_' . $pageRecord['uid']] .= LF . $fileContents;
+                    $tsConfig['uid_' . $pageRecord['uid']] .= LF . $fileContents;
                 }
             }
         }
-        return [$TSdataArray, $id, $rootLine, $returnPartArray];
+        $event->setTsConfig($tsConfig);
     }
 }

@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 
 /**
  * Helper to render a dynamic selection of available site extensions
@@ -41,13 +39,13 @@ class PackageHelper
 
     /**
      * PackageHelper constructor.
-     * @param null|PackageManager $packageManager
-     * @param null|SiteFinder $siteFinder
+     * @param PackageManager $packageManager
+     * @param SiteFinder $siteFinder
      */
-    public function __construct(PackageManager $packageManager = null, SiteFinder $siteFinder = null)
+    public function __construct(PackageManager $packageManager, SiteFinder $siteFinder)
     {
-        $this->packageManager = $packageManager ?? GeneralUtility::makeInstance(PackageManager::class);
-        $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
+        $this->packageManager = $packageManager;
+        $this->siteFinder = $siteFinder;
     }
 
 

@@ -9,6 +9,10 @@ services:
 
   B13\Bolt\TsConfig\Loader:
     public: true
+    tags:
+      - name: event.listener
+        identifier: 'add-site-configuration'
+        event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent
 
   B13\Bolt\TypoScript\Loader:
     public: true

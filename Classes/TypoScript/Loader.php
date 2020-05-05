@@ -16,7 +16,6 @@ namespace B13\Bolt\TypoScript;
 
 use B13\Bolt\Configuration\PackageHelper;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Hooks into the process of building TypoScript templates
@@ -24,18 +23,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Loader
 {
-
     /**
      * @var PackageHelper
      */
     protected $packageHelper = null;
 
     /**
-     * @param PackageHelper|null $packageHelper
+     * @param PackageHelper $packageHelper
      */
-    public function __construct(PackageHelper $packageHelper = null)
+    public function __construct(PackageHelper $packageHelper)
     {
-        $this->packageHelper = $packageHelper ?? GeneralUtility::makeInstance(PackageHelper::class);
+        $this->packageHelper = $packageHelper;
     }
 
     /**
