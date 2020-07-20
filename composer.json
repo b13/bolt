@@ -9,7 +9,8 @@
 		"typo3/cms-core": "^10.4"
 	},
 	"replace": {
-		"cmsexperts/bolt": "*"
+		"cmsexperts/bolt": "*",
+		"typo3-ter/bolt": "*"
 	},
 	"extra": {
 		"typo3/cms": {
