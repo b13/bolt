@@ -7,5 +7,4 @@ defined('TYPO3_MODE') or die();
     mod.web_ts.menu.function.tx_tstemplateceditor = 0
     mod.web_ts.menu.function.tx_tstemplateinfo = 0
     TCEFORM.pages.TSconfig.disabled=1
-    TCEFORM.pages.tsconfig_includes.disabled=1
 ');
