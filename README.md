@@ -2,8 +2,8 @@
 
 This package is a TYPO3 extension that makes integration work easier.
 
-We consider it best practice to run a site and all custom Backend Layouts, TypoScript, PageTS
-in one place, a so-called "site extension". We prefix them with "site_" making it something like 
+We consider it "best practice" to run a site and all custom Backend Layouts, TypoScript, PageTS
+in one place, a so-called "site extension". We prefix them with "site_" making it something like
 "site_myproject".
 
 Then, the tricky part starts:
@@ -36,8 +36,9 @@ If you want to do one step less when developing a TYPO3 website :)
 
 ## How to install this extension?
 
-You can set this up via composer (composer require b13/bolt) or via
-TER (extension name "bolt"), it runs best with TYPO3 v9 or later.
+You can set this up via composer (`composer require b13/bolt`) or via
+[TER](https://extensions.typo3.org/extension/bolt/) (extension name "bolt"),
+it runs best with TYPO3 v9 or later.
 
 ## Requirements
 
@@ -52,8 +53,7 @@ For details see the LICENSE file in this repository.
 ## ToDo
 
 - Kick start a site extension
-- Deal with domains
-- Add a integrator backend module to show the current setup
+- Add an integrator backend module to show the current setup
 - Integrate Fluid templates, Content types, etc.
 - Make "disabling sys_template" optional
 - Run all cases with extension templates / static inclusions work
