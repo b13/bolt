@@ -1,19 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B13\Bolt\TsConfig;
 
 /*
- * This file is part of the TYPO3 CMS project.
+ * This file is part of TYPO3 CMS-based extension "bolt" by b13.
  *
  * It is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, either version 2
  * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
  */
+
 use B13\Bolt\Configuration\PackageHelper;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 
@@ -29,17 +27,11 @@ class Loader
      */
     protected $packageHelper;
 
-    /**
-     * @param PackageHelper $packageHelper
-     */
     public function __construct(PackageHelper $packageHelper)
     {
         $this->packageHelper = $packageHelper;
     }
 
-    /**
-     * @param ModifyLoadedPageTsConfigEvent $event
-     */
     public function __invoke(ModifyLoadedPageTsConfigEvent $event): void
     {
         $rootLine = $event->getRootLine();
