@@ -1,4 +1,5 @@
 <?php
+
 namespace B13\Bolt\TsConfig;
 
 /*
@@ -26,7 +27,7 @@ class Loader
     /**
      * @var PackageHelper
      */
-    protected $packageHelper = null;
+    protected $packageHelper;
 
     /**
      * @param PackageHelper $packageHelper

@@ -1,4 +1,5 @@
 <?php
+
 namespace B13\Bolt\Configuration;
 
 /*
@@ -30,12 +31,12 @@ class PackageHelper
     /**
      * @var PackageManager
      */
-    protected $packageManager = null;
+    protected $packageManager;
 
     /**
      * @var SiteFinder
      */
-    protected $siteFinder = null;
+    protected $siteFinder;
 
     /**
      * PackageHelper constructor.
@@ -48,10 +49,9 @@ class PackageHelper
         $this->siteFinder = $siteFinder;
     }
 
-
     /**
      * @param int $pageId
-     * @return null|Package
+     * @return Package|null
      */
     public function getSitePackage(int $pageId): ?Package
     {

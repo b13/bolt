@@ -21,5 +21,11 @@
 		"psr-4": {
 			"B13\\Bolt\\": "Classes"
 		}
+	},
+	"require-dev": {
+		"typo3/coding-standards": "^0.2.0"
+	},
+	"config": {
+		"sort-packages": true
 	}
 }

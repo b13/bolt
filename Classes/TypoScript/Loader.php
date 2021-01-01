@@ -1,4 +1,5 @@
 <?php
+
 namespace B13\Bolt\TypoScript;
 
 /*
@@ -26,7 +27,7 @@ class Loader
     /**
      * @var PackageHelper
      */
-    protected $packageHelper = null;
+    protected $packageHelper;
 
     /**
      * @param PackageHelper $packageHelper
@@ -46,7 +47,6 @@ class Loader
      *  ];
      * @param array $hookParameters
      * @param TemplateService $templateService
-     * @return void
      */
     public function addSiteConfiguration(&$hookParameters, TemplateService $templateService)
     {
@@ -58,7 +58,6 @@ class Loader
         foreach ($rootLine as $level => $pageRecord) {
             $package = $this->packageHelper->getSitePackage((int)$pageRecord['uid']);
             if ($package !== null) {
-
                 $constantsFile = $package->getPackagePath() . 'Configuration/TypoScript/constants.typoscript';
                 $setupFile = $package->getPackagePath() . 'Configuration/TypoScript/setup.typoscript';
                 if (!file_exists($constantsFile)) {
