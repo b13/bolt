@@ -27,5 +27,8 @@
 	},
 	"config": {
 		"sort-packages": true
+	},
+	"scripts": {
+		"php:cs": "@composer exec php-cs-fixer fix"
 	}
 }
