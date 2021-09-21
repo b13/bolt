@@ -46,6 +46,9 @@ class PackageHelper
         try {
             $site = $this->siteFinder->getSiteByRootPageId($pageId);
             $configuration = $site->getConfiguration();
+            if (!isset($configuration['sitePackage'])) {
+                return null;
+            }
             $packageKey = (string)$configuration['sitePackage'];
             return $this->packageManager->getPackage($packageKey);
         } catch (SiteNotFoundException $e) {
