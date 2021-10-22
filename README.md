@@ -23,12 +23,13 @@ where you can define your site extension:
 It's doing the same as you'd need to do manually all the time.
 
 What you do:
+
 * Create your site extension
 * Install bolt, and choose your site extension on your Site Configuration
 * Ensure your site extension contains one of the following files
-    - Configuration/TypoScript/constants.txt or constants.typoscript
-    - Configuration/TypoScript/setup.txt or setup.typoscript
-    - Configuration/PageTs/main.tsconfig or Configuration/PageTsConfig/main.tsconfig
+    - `Configuration/TypoScript/constants.typoscript` (or `Configuration/TypoScript/constants.txt`)
+    - `Configuration/TypoScript/setup.typoscript` (or `Configuration/TypoScript/setup.txt`)
+    - `Configuration/PageTs/main.tsconfig` or `Configuration/PageTsConfig/main.tsconfig`
 
 ## When do I need this extension?
 
@@ -42,7 +43,7 @@ it runs best with TYPO3 v9 or later.
 
 ## Requirements
 
-Site Configation is required.
+Site configuration is required.
 
 ## License
 
@@ -52,7 +53,7 @@ For details see the LICENSE file in this repository.
 
 ## ToDo
 
-- Kick start a site extension
+- Kickstart a site extension
 - Add an integrator backend module to show the current setup
 - Integrate Fluid templates, Content types, etc.
 - Make "disabling sys_template" optional
