@@ -46,7 +46,7 @@ class Loader
                 if (file_exists($tsConfigFile)) {
                     $fileContents = @file_get_contents($tsConfigFile);
                     if (!isset($tsConfig['uid_' . $pageRecord['uid']])) {
-                      $tsConfig['uid_' . $pageRecord['uid']] = '';
+                        $tsConfig['uid_' . $pageRecord['uid']] = '';
                     }
                     $tsConfig['uid_' . $pageRecord['uid']] .= LF . $fileContents;
                 }
