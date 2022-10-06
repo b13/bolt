@@ -1,5 +1,0 @@
-@isroot
-@clear
-@sitetitle "My site title only in constants available"
-@import "EXT:gridelements/TypoScript/*.txt"
-@import "myexample/site_base/Configuration/TypoScript/setup.txt"

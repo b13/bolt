@@ -16,6 +16,8 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
@@ -54,6 +56,20 @@ class PackageHelper
         } catch (SiteNotFoundException $e) {
             return null;
         } catch (UnknownPackageException $e) {
+            return null;
+        }
+    }
+
+    public function getSitePackageFromSite(Site $site): ?PackageInterface
+    {
+        $configuration = $site->getConfiguration();
+        if (!isset($configuration['sitePackage'])) {
+            return null;
+        }
+        $packageKey = (string)$configuration['sitePackage'];
+        try {
+            return $this->packageManager->getPackage($packageKey);
+        } catch (UnknownPackageException $_) {
             return null;
         }
     }

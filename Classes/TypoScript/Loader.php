@@ -13,11 +13,13 @@ namespace B13\Bolt\TypoScript;
  */
 
 use B13\Bolt\Configuration\PackageHelper;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Hooks into the process of building TypoScript templates
- * only works with TYPO3 v8.6.0 natively, otherwise the XCLASS kicks in
+ * Hooks into the process of building TypoScript templates.
+ * Works with TYPO3 >= 8.6.0 and <= 11, with TYPO3 v12 event kicks in.
  */
 class Loader
 {
@@ -49,6 +51,14 @@ class Loader
         if (!is_array($rootLine) || empty($rootLine)) {
             return;
         }
+
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 12) {
+            // TYPO3 12.0 still has hook 'runThroughTemplatesPostProcessing', but we use the
+            // event already. This if can be removed when TYPO3 12.1 has been released and
+            // the hook is removed in the core.
+            return;
+        }
+
         foreach ($rootLine as $level => $pageRecord) {
             $package = $this->packageHelper->getSitePackage((int)$pageRecord['uid']);
             if ($package !== null) {
@@ -72,11 +82,6 @@ class Loader
                     $setup = '';
                 }
 
-                // pre-process the lines of the constants and setup and check for "@" syntax
-                // @import
-                // @sitetitle
-                // @clear
-                // are the currently allowed syntax (must be on the head of each line)
                 $hasRootTemplate = (bool)$templateService->getRootId();
                 $fakeRow = [
                     'config' => $setup,
