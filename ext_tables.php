@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
 // disable sys_templates - could be done as an option of the extension dynamically
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
