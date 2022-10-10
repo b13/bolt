@@ -16,3 +16,11 @@ services:
 
   B13\Bolt\TypoScript\Loader:
     public: true
+
+  B13\Bolt\TypoScript\AddTypoScriptFromSiteExtensionEvent:
+    public: true
+    tags:
+      - name: event.listener
+        identifier: 'b13-bolt/add-typoscript-from-site-extension'
+        # for v10 compat, optional since v11
+        event: TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent
