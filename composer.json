@@ -7,7 +7,7 @@
 	"keywords": ["TYPO3 CMS", "Integrators", "Site Extension", "Site Package", "TypoScript"],
 	"require": {
 		"php": "^7.2 || ^8.0",
-		"typo3/cms-core": "^10.4 || ^11.0"
+		"typo3/cms-core": "^10.4 || ^11.0 || ^12.0"
 	},
 	"replace": {
 		"cmsexperts/bolt": "*",
