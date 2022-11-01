@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Bolt - An easy TYPO3 integration basis',
-    'description' => 'This package ships best defaults for integrators',
+    'description' => 'Connect a Site configuration to a Site package / extension',
     'category' => 'fe',
     'version' => '2.2.0',
     'state' => 'stable',
