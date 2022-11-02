@@ -7,6 +7,9 @@ services:
   B13\Bolt\:
     resource: '../Classes/*'
 
+  B13\Bolt\Configuration\PackageHelper:
+    public: true
+
   B13\Bolt\TsConfig\Loader:
     public: true
     tags:

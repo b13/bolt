@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  */
 class PackageHelper
 {
-
     /**
      * @var PackageManager
      */
@@ -71,6 +70,38 @@ class PackageHelper
             return $this->packageManager->getPackage($packageKey);
         } catch (UnknownPackageException $_) {
             return null;
+        }
+    }
+
+    /**
+     * "itemsProcFunc" method adding a list of available "site_*" extension
+     * keys as select drop down items. Used in Site backend module.
+     */
+    public function getSiteListForSiteModule(array &$fieldDefinition): void
+    {
+        $fieldDefinition['items'][] = [
+            '-- None --',
+            ''
+        ];
+        $currentValue = $fieldDefinition['row']['sitePackage'] ?? '';
+        $gotCurrentValue = false;
+        foreach ($this->packageManager->getActivePackages() as $package) {
+            $packageKey = $package->getPackageKey();
+            if (substr($packageKey, 0, 5 ) === 'site_') {
+                $fieldDefinition['items'][] = [
+                    0 => $packageKey,
+                    1 => $packageKey,
+                ];
+                if ($currentValue === $packageKey) {
+                    $gotCurrentValue = true;
+                }
+            }
+        }
+        if (!$gotCurrentValue && $currentValue !== '') {
+            $fieldDefinition['items'][] = [
+                0 => $currentValue,
+                1 => $currentValue,
+            ];
         }
     }
 }
