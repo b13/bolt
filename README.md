@@ -69,8 +69,8 @@ extension manager.
 ## Disabled Backend settings
 
 Extension `bolt` adds default PageTsConfig that disallows adding new `sys_template` records in the
-backend, and it hides the `PageTsConfig` field when editing page records. Those defaults are added
-in `ext_tables.php`, they follow our best practices, but can be rewritten again if really needed.
+backend, and it hides the `PageTsConfig` related fields when editing page records. Those defaults are
+added  in `ext_tables.php`, they follow our best practices, but can be rewritten again if really needed.
 
 
 ## License
