@@ -44,7 +44,7 @@ class Loader
      * @param array $hookParameters
      * @param TemplateService $templateService
      */
-    public function addSiteConfiguration(&$hookParameters, TemplateService $templateService)
+    public function addSiteConfiguration(&$hookParameters, TemplateService $templateService): void
     {
         // let's copy the rootline value, as $templateService->processTemplate() might reset it
         $rootLine = $hookParameters['rootLine'] ?? null;
@@ -92,7 +92,7 @@ class Loader
                     'uid' => 'sys_bolt_' . (int)$pageRecord['uid'] . $package->getPackageKey(),
                     'title' => $package->getPackageKey(),
                     // make this the root template
-                    'root' => !$hasRootTemplate
+                    'root' => !$hasRootTemplate,
                 ];
                 $templateService->processTemplate($fakeRow, 'sys_bolt_' . $package->getPackageKey(), (int)$pageRecord['uid'], 'sys_bolt_' . $package->getPackageKey());
 
