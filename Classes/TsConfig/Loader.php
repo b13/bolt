@@ -13,6 +13,7 @@ namespace B13\Bolt\TsConfig;
  */
 
 use B13\Bolt\Configuration\PackageHelper;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent as LegacyModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent;
 
@@ -41,20 +42,36 @@ class Loader
             // Simplify this construct when v11 compat is dropped, clean up Services.yaml.
             return;
         }
-        $this->findAndAddConfiguration($event);
+        $event->setTsConfig(
+            $this->findAndAddConfiguration(
+                $event->getRootLine(),
+                $event->getTsConfig()
+            )
+        );
     }
 
     public function addSiteConfiguration(ModifyLoadedPageTsConfigEvent $event): void
     {
-        $this->findAndAddConfiguration($event);
+        $event->setTsConfig(
+            $this->findAndAddConfiguration(
+                $event->getRootLine(),
+                $event->getTsConfig()
+            )
+        );
     }
 
-    protected function findAndAddConfiguration($event): void
+    protected function findAndAddConfiguration(array $rootLine, array $tsConfig): array
     {
-        $rootLine = $event->getRootLine();
-        $tsConfig = $event->getTsConfig();
         foreach ($rootLine as $pageRecord) {
-            $package = $this->packageHelper->getSitePackage($pageRecord['uid']);
+            $package = $this->packageHelper->getSitePackage((int)$pageRecord['uid']);
+            if ($package === null && ($pageRecord['is_siteroot'] ?? false)) {
+                // Translations of site roots will yield no $package when looking by root page or pageId
+                $fullPageRecord = BackendUtility::getRecord('pages', (int)$pageRecord['uid']);
+                $transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? 'l10n_parent';
+                if ($fullPageRecord[$transOrigPointerField] ?? false) {
+                    $package = $this->packageHelper->getSitePackage((int)$fullPageRecord[$transOrigPointerField]);
+                }
+            }
             if ($package !== null) {
                 $tsConfigFile = $package->getPackagePath() . 'Configuration/PageTs/main.tsconfig';
                 if (!file_exists($tsConfigFile)) {
@@ -69,6 +86,6 @@ class Loader
                 }
             }
         }
-        $event->setTsConfig($tsConfig);
+        return $tsConfig;
     }
 }
