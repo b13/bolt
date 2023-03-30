@@ -17,7 +17,6 @@ use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
@@ -42,19 +41,13 @@ class PackageHelper
         $this->siteFinder = $siteFinder;
     }
 
-    public function getSitePackage(int $pageId): ?PackageInterface
+    public function getSitePackage(int $rootPageId): ?PackageInterface
     {
         try {
-            $site = $this->siteFinder->getSiteByRootPageId($pageId);
-            $configuration = $site->getConfiguration();
-            if (!isset($configuration['sitePackage'])) {
-                return null;
-            }
-            $packageKey = (string)$configuration['sitePackage'];
-            return $this->packageManager->getPackage($packageKey);
+            return $this->getSitePackageFromSite(
+                $this->siteFinder->getSiteByRootPageId($rootPageId)
+            );
         } catch (SiteNotFoundException $e) {
-            return null;
-        } catch (UnknownPackageException $e) {
             return null;
         }
     }
@@ -81,13 +74,13 @@ class PackageHelper
     {
         $fieldDefinition['items'][] = [
             '-- None --',
-            ''
+            '',
         ];
         $currentValue = $fieldDefinition['row']['sitePackage'] ?? '';
         $gotCurrentValue = false;
         foreach ($this->packageManager->getActivePackages() as $package) {
             $packageKey = $package->getPackageKey();
-            if (substr($packageKey, 0, 5 ) === 'site_') {
+            if (substr($packageKey, 0, 5) === 'site_') {
                 $fieldDefinition['items'][] = [
                     0 => $packageKey,
                     1 => $packageKey,
