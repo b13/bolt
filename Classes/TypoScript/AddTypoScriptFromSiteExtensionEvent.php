@@ -170,6 +170,7 @@ final class AddTypoScriptFromSiteExtensionEvent
                 // Not a sys_template row before, not an sys_template record on same page. Add our
                 // fake row and mark we added it.
                 $newSysTemplateRows[] = $fakeRow;
+                $newSysTemplateRows[] = $sysTemplateRow;
                 $fakeRowAdded = true;
             }
         }
