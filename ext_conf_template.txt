@@ -1,0 +1,2 @@
+# cat=General; type=string; label=LLL:EXT:bolt/Resources/Private/Language/ext_conf_template.xlf:sitePackagePrefix.label
+sitePackagePrefix = site_

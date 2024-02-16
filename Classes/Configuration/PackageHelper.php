@@ -12,6 +12,7 @@ namespace B13\Bolt\Configuration;
  * of the License, or any later version.
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -35,10 +36,16 @@ class PackageHelper
      */
     protected $siteFinder;
 
-    public function __construct(PackageManager $packageManager, SiteFinder $siteFinder)
+    /**
+     * @var ExtensionConfiguration
+     */
+    protected $extensionConfiguration;
+
+    public function __construct(PackageManager $packageManager, SiteFinder $siteFinder, ExtensionConfiguration $extensionConfiguration)
     {
         $this->packageManager = $packageManager;
         $this->siteFinder = $siteFinder;
+        $this->extensionConfiguration = $extensionConfiguration;
     }
 
     public function getSitePackage(int $rootPageId): ?PackageInterface
@@ -72,6 +79,7 @@ class PackageHelper
      */
     public function getSiteListForSiteModule(array &$fieldDefinition): void
     {
+        $sitePackagePrefix = $this->extensionConfiguration->get('bolt', 'sitePackagePrefix');
         $fieldDefinition['items'][] = [
             '-- None --',
             '',
@@ -80,7 +88,7 @@ class PackageHelper
         $gotCurrentValue = false;
         foreach ($this->packageManager->getActivePackages() as $package) {
             $packageKey = $package->getPackageKey();
-            if (substr($packageKey, 0, 5) === 'site_') {
+            if (substr($packageKey, 0, strlen($sitePackagePrefix)) === $sitePackagePrefix) {
                 $fieldDefinition['items'][] = [
                     0 => $packageKey,
                     1 => $packageKey,
