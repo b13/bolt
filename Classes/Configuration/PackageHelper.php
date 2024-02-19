@@ -36,16 +36,10 @@ class PackageHelper
      */
     protected $siteFinder;
 
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
-
-    public function __construct(PackageManager $packageManager, SiteFinder $siteFinder, ExtensionConfiguration $extensionConfiguration)
+    public function __construct(PackageManager $packageManager, SiteFinder $siteFinder)
     {
         $this->packageManager = $packageManager;
         $this->siteFinder = $siteFinder;
-        $this->extensionConfiguration = $extensionConfiguration;
     }
 
     public function getSitePackage(int $rootPageId): ?PackageInterface
@@ -79,7 +73,6 @@ class PackageHelper
      */
     public function getSiteListForSiteModule(array &$fieldDefinition): void
     {
-        $sitePackagePrefix = $this->extensionConfiguration->get('bolt', 'sitePackagePrefix');
         $fieldDefinition['items'][] = [
             '-- None --',
             '',
@@ -87,8 +80,8 @@ class PackageHelper
         $currentValue = $fieldDefinition['row']['sitePackage'] ?? '';
         $gotCurrentValue = false;
         foreach ($this->packageManager->getActivePackages() as $package) {
-            $packageKey = $package->getPackageKey();
-            if (substr($packageKey, 0, strlen($sitePackagePrefix)) === $sitePackagePrefix) {
+            if ($package->getPackageMetaData()->getPackageType() === 'typo3-cms-site') {
+                $packageKey = $package->getPackageKey();
                 $fieldDefinition['items'][] = [
                     0 => $packageKey,
                     1 => $packageKey,
