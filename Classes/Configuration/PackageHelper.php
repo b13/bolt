@@ -12,6 +12,7 @@ namespace B13\Bolt\Configuration;
  * of the License, or any later version.
  */
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -79,8 +80,8 @@ class PackageHelper
         $currentValue = $fieldDefinition['row']['sitePackage'] ?? '';
         $gotCurrentValue = false;
         foreach ($this->packageManager->getActivePackages() as $package) {
-            $packageKey = $package->getPackageKey();
-            if (substr($packageKey, 0, 5) === 'site_') {
+            if ($package->getPackageMetaData()->getPackageType() === 'typo3-cms-site') {
+                $packageKey = $package->getPackageKey();
                 $fieldDefinition['items'][] = [
                     0 => $packageKey,
                     1 => $packageKey,
